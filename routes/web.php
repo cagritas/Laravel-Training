@@ -5,6 +5,8 @@ use App\Http\Controllers\Ornek;
 use App\Http\Controllers\WebPage;
 use App\Http\Controllers\FormIslemleri;
 use App\Http\Controllers\Veritabaniislemleri;
+use App\Http\Controllers\Modelislemler;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,3 +40,10 @@ Route::get('/ekle', [Veritabaniislemleri::class,'ekle']);
 Route::get('/guncelle', [Veritabaniislemleri::class,'guncelle']);
 Route::get('/sil', [Veritabaniislemleri::class,'sil']);
 Route::get('/listele', [Veritabaniislemleri::class,'bilgiler']);
+Route::get('/modellist', [Modelislemler::class,'list']);
+Route::get('/modelekle', [Modelislemler::class,'ekle']);
+Route::get('/modelguncelle', [Modelislemler::class,'guncelle']);
+Route::get('/modelsil', [Modelislemler::class,'sil']);
+
+
+
