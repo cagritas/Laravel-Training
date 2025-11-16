@@ -1,64 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel Eğitim Playground
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Practice-focused Laravel 10 project that demonstrates the most common building blocks you need while teaching Laravel in Turkish or English. Every feature in this playground maps to a hands-on “lesson” (query builder CRUD, Eloquent CRUD, guarded forms, contact requests, image uploads, registration validation, and a marketing landing page). Use this repository to rehearse demos locally, then jump to the wiki-style notes for deep dives.
 
-## About Laravel
+- **Live Wiki Notes:** English (`Notes.md`) and Turkish (`NotesTR.md`). These will later power the GitHub Wiki; for now read them side-by-side with this README.
+- **Tech:** PHP 8.2+, Laravel 10.x, MySQL-compatible database, Blade, Storage facade, Tailored middleware.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Feature Highlights](#feature-highlights)
+- [Quick Start](#quick-start)
+- [Key Routes](#key-routes)
+- [Artisan Cheat Sheet](#artisan-cheat-sheet)
+- [Project Structure](#project-structure)
+- [Wiki / Further Reading](#wiki--further-reading)
+- [Contributing](#contributing)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Feature Highlights
 
-## Learning Laravel
+- **Landing + Welcome Hub:** `/web` renders a custom marketing layout (`resources/views/layouts/site.blade.php` + partials) while `/` surfaces every exercise as a card grid.
+- **Guarded Form Flow:** `/form` + `/form-result` demonstrate CSRF, custom middleware (`FormSubmissionGuard`), and simple request handling.
+- **Query Builder CRUD:** `DatabaseOperationsController` shows insert/update/delete/list actions against the `information_entries` table.
+- **Eloquent CRUD:** `ModelOperationsController` mirrors the same flows via the `InformationEntry` model.
+- **Contact Requests:** `/contact` posts to `ContactRequestController`, storing data with validation-lite UX and flash status messaging.
+- **Image Uploads & Gallery:** `/upload` validates images (2 MB limit) and stores them on the `public` disk; `/images` lists thumbnails.
+- **User Registration Demo:** `/register` highlights Laravel’s validator rules (`required`, `unique`, `confirmed`) plus proper feedback handling.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Everything above is backed by migrations inside `database/migrations/2025_*` so you can reset the database whenever you need a clean slate.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Quick Start
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/<your-account>/LaravelEgitim.git
+cd LaravelEgitim
+cp .env.example .env        # or use php -r "copy('.env.example', '.env');"
+composer install
+php artisan key:generate
+php artisan migrate         # runs all demo migrations
+php artisan storage:link    # make uploads publicly accessible
+php artisan serve
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Visit `http://127.0.0.1:8000` to see the playground hub. From there you can explore every module, or hit specific endpoints directly (see below).
 
-### Premium Partners
+> **Database note:** if you target older MySQL versions, `AppServiceProvider` already forces `Schema::defaultStringLength(191)` to avoid index length issues.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Key Routes
+
+| Route | Method | Description |
+| --- | --- | --- |
+| `/` | GET | Welcome hub linking to each demo. |
+| `/web` | GET | Marketing landing page rendered via the new layout + partials. |
+| `/test/{name}` | GET | Example of passing parameters to Blade. |
+| `/form` | GET/POST | Form demo guarded by `FormSubmissionGuard`. |
+| `/add`, `/update`, `/delete`, `/list` | GET | Query builder CRUD examples. |
+| `/model-list`, `/model-add`, `/model-update`, `/model-delete` | GET | Eloquent CRUD helpers. |
+| `/contact` | GET/POST | Contact request capture and flash messaging. |
+| `/upload` | GET/POST | Multipart image upload + validation. |
+| `/images` | GET | List uploaded images from storage. |
+| `/register` | GET/POST | User registration validation sample. |
+
+View `routes/web.php` if you want to wire additional exercises or rename the existing ones.
+
+## Artisan Cheat Sheet
+
+| Command | Purpose |
+| --- | --- |
+| `php artisan route:list --path=form` | Inspect specific demo routes. |
+| `php artisan make:controller UploadImage` | Scaffold controllers (already used for each module). |
+| `php artisan make:model InformationEntry -m` | Pair model + migration when extending demos. |
+| `php artisan migrate:fresh` | Reset the database during workshops. |
+| `php artisan tinker` | Manually inspect models while presenting CRUD flows. |
+| `php artisan storage:link` | Ensure `/storage` images resolve publicly. |
+
+Check `Notes.md` for a much larger table including troubleshooting advice.
+
+## Project Structure
+
+```
+app/
+├── Http/Controllers/
+│   ├── DatabaseOperationsController.php
+│   ├── FormController.php
+│   ├── ModelOperationsController.php
+│   ├── ContactRequestController.php
+│   ├── UploadImage.php
+│   └── RegisterUser.php
+├── Http/Middleware/FormSubmissionGuard.php
+└── Models/
+    ├── InformationEntry.php
+    └── ContactRequest.php
+resources/views/
+├── layouts/site.blade.php
+├── pages/home.blade.php
+├── welcome.blade.php
+├── form.blade.php
+├── contact.blade.php
+├── upload.blade.php
+├── list_images.blade.php
+└── register.blade.php
+database/migrations/2025_*   # Tables for each module
+```
+
+Each folder is deliberately organized so workshop participants can jump between MVC layers quickly (controllers, models, views share similar names).
+
+## Wiki / Further Reading
+
+- Read the step-by-step notes: [`Notes.md`](Notes.md) (EN) and [`NotesTR.md`](NotesTR.md) (TR).  
+- Once the GitHub Wiki is published, these notes will power the visual documentation. Use this README for quick context; use the Wiki for screenshots, diagrams, and extended tutorials.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Fork the project, create a topic branch, and keep the commit history clean.
+2. Update or extend the notes when you add a new lesson so the Wiki stays in sync.
+3. Open a pull request summarizing the new demo or improvement.
 
-## Code of Conduct
+Issues and suggestions are welcome—feel free to log ideas for new lessons (authentication, emailing, job queues, etc.) so the playground keeps growing.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
