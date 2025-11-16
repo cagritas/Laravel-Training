@@ -9,11 +9,13 @@
     <script src='main.js'></script>
 </head>
 <body>
-    <form action="{{ route('sonuc') }}" method="post">
+    <!-- Basic training form that posts to the example controller -->
+    <form action="{{ route('form.result') }}" method="post">
         @csrf
 
-        <textarea name="metin"> </textarea> <br>
-        <input type="submit" name="ilet" value="Gönder">
+        <!-- Capture the message field that the middleware inspects -->
+        <textarea name="message" placeholder="Type your sample message here"></textarea> <br>
+        <input type="submit" name="submit" value="Send">
     </form>
 </body>
 </html>

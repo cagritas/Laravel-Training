@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Ornek;
-use App\Http\Controllers\WebPage;
-use App\Http\Controllers\FormIslemleri;
-use App\Http\Controllers\Veritabaniislemleri;
-use App\Http\Controllers\Modelislemler;
+use App\Http\Controllers\DatabaseOperationsController;
+use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\ModelOperationsController;
+use App\Http\Controllers\WebPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,22 +28,26 @@ Route::get('/', function () {
 
 // Route::get('/test', [Ornek::class,'test']);
 
-Route::get('/test/{isim}', [Ornek::class,'test']);
+// Sample route showing parameter binding.
+Route::get('/test/{name}', [ExampleController::class, 'show']);
 
-Route::get('/web', [WebPage::class,'site'])->name('home');
+// Landing page demo.
+Route::get('/web', [WebPageController::class, 'showLandingPage'])->name('home');
 
-Route::get('/form', [FormIslemleri::class,'gorunum'])->name('form');
+// Simple form submission flow.
+Route::get('/form', [FormController::class, 'showForm'])->name('form');
 
-Route::middleware('arakontrol')->post('/form-sonuc', [FormIslemleri::class,'sonuc'])->name('sonuc');
+// Middleware-protected POST endpoint (rejects banned words).
+Route::middleware('form.guard')->post('/form-result', [FormController::class, 'processSubmission'])->name('form.result');
 
-Route::get('/ekle', [Veritabaniislemleri::class,'ekle']);
-Route::get('/guncelle', [Veritabaniislemleri::class,'guncelle']);
-Route::get('/sil', [Veritabaniislemleri::class,'sil']);
-Route::get('/listele', [Veritabaniislemleri::class,'bilgiler']);
-Route::get('/modellist', [Modelislemler::class,'list']);
-Route::get('/modelekle', [Modelislemler::class,'ekle']);
-Route::get('/modelguncelle', [Modelislemler::class,'guncelle']);
-Route::get('/modelsil', [Modelislemler::class,'sil']);
+// Query builder demonstrations.
+Route::get('/add', [DatabaseOperationsController::class, 'insert']);
+Route::get('/update', [DatabaseOperationsController::class, 'updateRecord']);
+Route::get('/delete', [DatabaseOperationsController::class, 'delete']);
+Route::get('/list', [DatabaseOperationsController::class, 'showRecords']);
 
-
-
+// Eloquent model demonstrations.
+Route::get('/model-list', [ModelOperationsController::class, 'listEntries']);
+Route::get('/model-add', [ModelOperationsController::class, 'add']);
+Route::get('/model-update', [ModelOperationsController::class, 'updateRecord']);
+Route::get('/model-delete', [ModelOperationsController::class, 'delete']);
