@@ -7,6 +7,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\ModelOperationsController;
 use App\Http\Controllers\WebPageController;
 use App\Http\Controllers\ContactRequestController;
+use App\Http\Controllers\UploadImage;
 
 
 /*
@@ -57,3 +58,7 @@ Route::get('/model-delete', [ModelOperationsController::class, 'delete']);
 // Contact request form endpoints.
 Route::get('/contact', [ContactRequestController::class, 'index'])->name('contact.form');
 Route::post('/contact', [ContactRequestController::class, 'store'])->name('contact.submit');
+
+Route::get('/upload', [UploadImage::class, 'showForm'])->name('upload.page');
+Route::post('/upload', [UploadImage::class, 'upload'])->name('upload.form');
+Route::get('/images', [UploadImage::class, 'ListImages'])->name('list.images');
