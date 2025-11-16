@@ -19,6 +19,6 @@ class WebPageController extends Controller
             'subheading' => 'Hello',
         ];
 
-        return view('web', $pageContent);
+        return view('pages.home', $pageContent);
     }
 }

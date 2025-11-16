@@ -136,6 +136,18 @@
                     </div>
 
                     <div class="border-t border-gray-200 dark:border-gray-700">
+                        <div class="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div>
+                                <div class="hub-card-title text-gray-900 dark:text-white">New Modern Landing Page</div>
+                                <p class="hub-card-text text-gray-600 dark:text-gray-400">
+                                    Explore the redesigned `/web` page featuring a reusable layout, partial navigation/footer, and refreshed color palette under <code>resources/views/pages/home.blade.php</code>.
+                                </p>
+                            </div>
+                            <a class="hub-link" href="{{ route('home') }}">View Landing Page</a>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 dark:border-gray-700">
                         <div class="hub-grid">
                             <div class="hub-card">
                                 <div class="hub-card-title text-gray-900 dark:text-white">UI & Demo Flows</div>
