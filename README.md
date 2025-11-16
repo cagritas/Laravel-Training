@@ -1,4 +1,4 @@
-# Laravel Eğitim Playground
+# Laravel Training Playground
 
 Practice-focused Laravel 10 project that demonstrates the most common building blocks you need while teaching Laravel in Turkish or English. Every feature in this playground maps to a hands-on “lesson” (query builder CRUD, Eloquent CRUD, guarded forms, contact requests, image uploads, registration validation, and a marketing landing page). Use this repository to rehearse demos locally, then jump to the wiki-style notes for deep dives.
 
