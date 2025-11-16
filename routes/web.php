@@ -8,6 +8,7 @@ use App\Http\Controllers\ModelOperationsController;
 use App\Http\Controllers\WebPageController;
 use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\UploadImage;
+use App\Http\Controllers\RegisterUser;
 
 
 /*
@@ -63,3 +64,7 @@ Route::post('/contact', [ContactRequestController::class, 'store'])->name('conta
 Route::get('/upload', [UploadImage::class, 'showForm'])->name('upload.page');
 Route::post('/upload', [UploadImage::class, 'upload'])->name('upload.form');
 Route::get('/images', [UploadImage::class, 'ListImages'])->name('list.images');
+
+// User registration routes.
+Route::get('/register', [RegisterUser::class, 'index'])->name('register.page');
+Route::post('/register', [RegisterUser::class, 'register'])->name('register.submit');
